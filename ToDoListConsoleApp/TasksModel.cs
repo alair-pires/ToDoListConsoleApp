@@ -8,13 +8,17 @@ namespace ToDoListConsoleApp
 {
     public class TasksModel
     {
-        public int TaskId { get; set; }
+        private static int ID = 1;
+        public int TaskId { get; private set; }
         public string TaskName { get; set; }
+
+        public bool Status { get; set; }
 
         public TasksModel(string name)
         {
-            TaskId++;
+            TaskId = ID++;
             TaskName = name;
+            Status = false;
         }
     }
 }
