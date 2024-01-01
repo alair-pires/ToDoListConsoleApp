@@ -34,11 +34,17 @@ namespace ToDoListConsoleApp
             {
                 case 1:
                     TaskList(tasks);
+                    Console.WriteLine("\n\n\n");
                     Console.WriteLine("Selecione a tarefa para alterar: ");
                     opcao = ToInt(Console.ReadLine());
-
-                    AlteraStatus(opcao, tasks);
+                    AlterStatus(opcao, tasks);
+                    Console.WriteLine("\n\n\n");
                     TaskList(tasks);
+                    break;
+                case 2:
+                    Console.WriteLine("Excreva qual a tarefa: ");
+                    string taskName = NameValidate(Console.ReadLine());
+                    tasks.Add(new TasksModel(taskName));
                     break;
                 default:
                     break;
@@ -77,7 +83,18 @@ namespace ToDoListConsoleApp
             return num;
         }
 
-        public static void AlteraStatus(int opcao, List<TasksModel> tasks)
+        public static string NameValidate(string nome)
+        {
+            Console.WriteLine("");
+
+            while (nome != null || nome != "")
+            {
+
+            }
+                return nome;
+        }
+
+        public static void AlterStatus(int opcao, List<TasksModel> tasks)
         {
             if (tasks[opcao - 1].Status)
             {
