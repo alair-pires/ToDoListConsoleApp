@@ -22,33 +22,46 @@ namespace ToDoListConsoleApp
 
             Console.WriteLine("\n\n\n");
 
-            Console.WriteLine("Opções:");
-            Console.WriteLine("1. Alterar status de uma tarefa.");
-            Console.WriteLine("2. Criar uma tarefa nova.");
-            Console.WriteLine("3. Editar uma tarefa.");
-            Console.WriteLine("4. Excluir uma tarefa.");
-            Console.WriteLine("5. Sair do programa.");
-            opcao = ToInt(Console.ReadLine());
+            opcao = Options();            
 
-            switch (opcao)
+            while (opcao != 5)
             {
-                case 1:
-                    TaskList(tasks);
-                    Console.WriteLine("\n\n\n");
-                    Console.WriteLine("Selecione a tarefa para alterar: ");
-                    opcao = ToInt(Console.ReadLine());
-                    AlterStatus(opcao, tasks);
-                    Console.WriteLine("\n\n\n");
-                    TaskList(tasks);
-                    break;
-                case 2:
-                    Console.WriteLine("Excreva qual a tarefa: ");
-                    string taskName = NameValidate(Console.ReadLine());
-                    tasks.Add(new TasksModel(taskName));
-                    break;
-                default:
-                    break;
-            }
+                switch (opcao)
+                {
+                    case 1:
+                        TaskList(tasks);
+                        Console.WriteLine("\n");
+                        Console.WriteLine("Selecione a tarefa para alterar: ");
+                        opcao = ToInt(Console.ReadLine());
+                        AlterStatus(opcao, tasks);
+                        Console.WriteLine("\n");
+                        TaskList(tasks);
+                        break;
+                    case 2:
+                        Console.WriteLine("Nome da tarefa: ");
+                        string taskName = NameValidate(Console.ReadLine());
+                        tasks.Add(new TasksModel(taskName));
+                        Console.WriteLine("\n\n\n");
+                        TaskList(tasks);
+                        break;
+                    default:
+                        break;
+                }
+
+                opcao = Options();
+            }            
+        }
+
+        public static int Options()
+        {
+            Console.WriteLine("Opções:\n" +
+                "1. Alterar status de uma tarefa.\n" +
+                "2. Criar uma tarefa nova.\n" +
+                "3. Editar uma tarefa.\n" +
+                "4. Excluir uma tarefa.\n" +
+                "5. Sair do programa.\n");
+            int op = ToInt(Console.ReadLine());
+            return op;
         }
 
         public static void TaskList(List<TasksModel> tasksModel)
@@ -85,13 +98,20 @@ namespace ToDoListConsoleApp
 
         public static string NameValidate(string nome)
         {
+            string nomeAux = nome;
             Console.WriteLine("");
-
-            while (nome != null || nome != "")
+            if (!string.IsNullOrWhiteSpace(nomeAux))
             {
-
+                nomeAux = nomeAux.Trim();
+                return nomeAux;
             }
-                return nome;
+            while (string.IsNullOrWhiteSpace(nomeAux))
+            {
+                Console.WriteLine("Não é possível inserir tarefa sem nome, insira um nome valido: ");
+                nomeAux = Console.ReadLine();                
+            }
+            nomeAux = nomeAux.Trim();
+            return nomeAux;
         }
 
         public static void AlterStatus(int opcao, List<TasksModel> tasks)
