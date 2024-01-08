@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ToDoListConsoleApp
 {
@@ -44,7 +45,19 @@ namespace ToDoListConsoleApp
                         Console.WriteLine("\n\n\n");
                         TaskList(tasks);
                         break;
+                    case 3:
+                        EditTask(tasks);
+                        Console.WriteLine("\n\n\n");
+                        TaskList(tasks);
+                        break;
+                    case 4:
+                        Console.WriteLine("Em desenvolvimento...");
+                        break;
+                    case 5:
+                        Console.WriteLine("Fim do programa!");
+                        break;
                     default:
+                        Console.WriteLine("Opção inválida, favor informar uma opção possível!");
                         break;
                 }
 
@@ -76,22 +89,11 @@ namespace ToDoListConsoleApp
 
         public static int ToInt(string input)
         {
-            bool validate = false;
             int num = 0;
-            while (!validate)
+            while (!int.TryParse(input, out num))
             {
-                if (int.TryParse(input, out num))
-                {
-                    if (!(num >= 1 && num <= 5))
-                    {
-                        Console.WriteLine("Opção inválida, favor informar uma opção possível!");
-                        input = Console.ReadLine();
-                    }
-                    else
-                    {
-                        validate = true;
-                    }
-                }
+                Console.WriteLine("Favor inserir número inteiro!");
+                input = Console.ReadLine();
             }
             return num;
         }
@@ -125,6 +127,30 @@ namespace ToDoListConsoleApp
                 tasks[opcao - 1].Status = true;
             }
             Console.WriteLine("Alterado com sucesso.");
+        }
+
+        public static TasksModel FindTaskById(List<TasksModel> tasks, int id)
+        {
+            var task = tasks.FirstOrDefault(t => t.TaskId == id);
+
+            while (task is null)
+            {
+                Console.WriteLine("nenhuma tarefa encontrada, insira uma opção válida: ");
+                id = ToInt(Console.ReadLine());
+                task = tasks.FirstOrDefault(t => t.TaskId == id);
+            }
+            return task;
+        }
+
+        public static void EditTask(List<TasksModel> tasks)
+        {
+            Console.WriteLine("Informar o ID da task para edição:");
+            int id = ToInt(Console.ReadLine());
+            var taskToEdit = FindTaskById(tasks, id);
+
+
+            Console.WriteLine("Informe o nome: ");
+            taskToEdit.TaskName = NameValidate(Console.ReadLine());
         }
     }
 }
