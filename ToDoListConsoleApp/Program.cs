@@ -42,16 +42,19 @@ namespace ToDoListConsoleApp
                         Console.WriteLine("Nome da tarefa: ");
                         string taskName = NameValidate(Console.ReadLine());
                         tasks.Add(new TasksModel(taskName));
-                        Console.WriteLine("\n\n\n");
+                        Console.WriteLine("\n");
                         TaskList(tasks);
                         break;
                     case 3:
                         EditTask(tasks);
-                        Console.WriteLine("\n\n\n");
+                        Console.WriteLine("\n");
                         TaskList(tasks);
                         break;
                     case 4:
-                        Console.WriteLine("Em desenvolvimento...");
+                        DeleteTask(tasks);
+                        Console.WriteLine("\n");
+                        TaskList(tasks);
+                        Console.WriteLine("\n");
                         break;
                     case 5:
                         Console.WriteLine("Fim do programa!");
@@ -151,6 +154,16 @@ namespace ToDoListConsoleApp
 
             Console.WriteLine("Informe o nome: ");
             taskToEdit.TaskName = NameValidate(Console.ReadLine());
+        }
+
+        public static void DeleteTask(List<TasksModel> tasks)
+        {
+            Console.WriteLine("Informar o ID da task para deleção:");
+            int id = ToInt(Console.ReadLine());
+            var taskToDelete = FindTaskById(tasks, id);
+
+            Console.WriteLine($"Você esta excluindo a tarefa: {taskToDelete.TaskName}");
+            tasks.Remove(taskToDelete);
         }
     }
 }
