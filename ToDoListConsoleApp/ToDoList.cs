@@ -7,15 +7,12 @@ namespace ToDoListConsoleApp
 {
     public class ToDoList
     {
-        public List<TasksModel> taskList { get; set; }
+        public List<TasksModel> taskList  = new List<TasksModel>();
         public ToDoList()
         {
-            taskList = new List<TasksModel>
-            {
-                new TasksModel("Limpar o quarto"),
-                new TasksModel("Jogar fora o lixo"),
-                new TasksModel("Estudar")
-            };
+            AddTask("Limpar o quarto");
+            AddTask("Jogar fora o lixo");
+            AddTask("Estudar");
         }
         public void AddTask(string taskName)
         {
@@ -23,6 +20,7 @@ namespace ToDoListConsoleApp
         }
         public void PrintTaskList()
         {
+            Console.WriteLine("To do List:");
             foreach (var task in taskList)
             {
                 string status = task.Status ? "FEITO" : "A FAZER";
@@ -30,7 +28,7 @@ namespace ToDoListConsoleApp
                 Console.WriteLine($"{task.TaskId}: {task.TaskName} - {status}");
             }
         }
-        public int ShowOptions()
+        public void PrintMenuOptions()
         {
             Console.WriteLine("Opções:\n" +
                 "1. Alterar status de uma tarefa.\n" +
@@ -38,8 +36,6 @@ namespace ToDoListConsoleApp
                 "3. Editar uma tarefa.\n" +
                 "4. Excluir uma tarefa.\n" +
                 "5. Sair do programa.\n");
-            int op = ConvertToInt(Console.ReadLine());
-            return op;
         }
         public int ConvertToInt(string input)
         {
@@ -53,13 +49,14 @@ namespace ToDoListConsoleApp
         }
         public void AlterStatus(int opcao)
         {
-            if (taskList[opcao - 1].Status)
+            var task = FindTaskById(opcao);
+            if (task.Status)
             {
-                taskList[opcao - 1].Status = false;
+                task.Status = false;
             }
             else
             {
-                taskList[opcao - 1].Status = true;
+                task.Status = true;
             }
             Console.WriteLine("Alterado com sucesso.");
         }
@@ -80,13 +77,9 @@ namespace ToDoListConsoleApp
             nomeAux = nomeAux.Trim();
             return nomeAux;
         }
-        public void EditTask()
+        public void EditTask(int id)
         {
-            Console.WriteLine("Informar o ID da task para edição:");
-            int id = ConvertToInt(Console.ReadLine());
             var taskToEdit = FindTaskById(id);
-
-
             Console.WriteLine("Informe o nome: ");
             taskToEdit.TaskName = ValidateName(Console.ReadLine());
         }
